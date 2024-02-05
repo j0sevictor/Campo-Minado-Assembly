@@ -34,11 +34,14 @@ revealNeighboringCells:
 	bge $s0, $t1, else
 	blt $s1, 0, else
 	bge $s1, $t1, else
+	
+	# Carregando da heap o valor de board[i][j]
 	sll $t0, $s0, 5
 	sll $t1, $s1, 2
 	add $t2, $t0, $t1
 	add $t0, $t2, $a0
 	lw $t1, 0 ($t0)
+	
 	bne $t1, -2, else 
 	
 	move $a1, $s0
@@ -47,11 +50,9 @@ revealNeighboringCells:
 	lw $a1, 0 ($sp)
 	lw $a2, 4 ($sp)
 	lw $ra, 8 ($sp)
-	sw $v0, $t0
 	
-	bne $v0, $zero, else
-	
-	
+	sw $v0, $t0 # board[i][j] = x;
+	beq $v0, $zero, recursao
 	
 	else:
 	addi $s1, 1
@@ -66,4 +67,13 @@ revealNeighboringCells:
 	jr $ra
 
 recursao:
+	move $a1, $s0
+	move $a2, $s1
+	jal revealNeighboringCells
+	lw $a1, 0 ($sp)
+	lw $a2, 4 ($sp)
+	lw $ra, 8 ($sp)
+	addi $sp, $sp, 12
+	jr $ra
+	
 	
