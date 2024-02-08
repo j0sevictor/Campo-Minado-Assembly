@@ -47,7 +47,7 @@ revealNeighboringCells:
 	move $a2, $s1
 	jal countAdjacentBombs
 	
-	sw $v0, $t0 # board[i][j] = x;
+	sw $v0, 0($t0) # board[i][j] = x;
 	
 	bne $v0, $zero, else # if (x == 0)
 	move $a1, $s0
