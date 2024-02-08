@@ -3,30 +3,30 @@
 .globl revealNeighboringCells
 
 revealNeighboringCells:
-	# a0 = endereço do board
-	# a1 = linha
-	# a2 = coluna
+	# Parâmetros:
+	# 	a0 = endereço do board
+	# 	a1 = linha
+	# 	a2 = coluna
+	# Contexto:
+	# 	s0 = i
+	# 	s1 = j
+	# 	s2 = a1 (linha)
+	# 	s3 = a2 (coluna)
 	save_context
 	
-	addi $sp, $sp, -12
-	sw $a1, 0 ($sp)
-	sw $a2, 4 ($sp)
-	sw $ra, 8 ($sp)
+	move $s2, $a1
+	move $s3, $a2
 		
-	move $s0, $a1
-	addi $s0, -1 # int i = row - 1 ;
+	addi $s0, $s2, -1 # int i = row - 1 ;
 	
 	i_for_inicio:
-	move $t0, $a1
-	addi $t0, 1 # $t0 = row + 1
+	addi $t0, $s2, 1 # $t0 = row + 1
 	bgt $s0, $t0, i_for_fim
 	
-	move $s1, $a2
-	addi $s1, -1 # int j = column - 1; 
+	addi $s1, $s3, -1 # int j = column - 1; 
 	
 	j_for_inicio:
-	move $t0, $a2
-	addi $t0, 1 # $t0 = column + 1
+	addi $t0, $s3, 1 # $t0 = column + 1
 	bgt $s1, $t0, j_for_fim
 	
 	li $t1, SIZE
@@ -41,39 +41,27 @@ revealNeighboringCells:
 	add $t2, $t0, $t1
 	add $t0, $t2, $a0
 	lw $t1, 0 ($t0)
-	
 	bne $t1, -2, else 
 	
 	move $a1, $s0
 	move $a2, $s1
 	jal countAdjacentBombs
-	lw $a1, 0 ($sp)
-	lw $a2, 4 ($sp)
-	lw $ra, 8 ($sp)
 	
 	sw $v0, $t0 # board[i][j] = x;
-	beq $v0, $zero, recursao
+	
+	bne $v0, $zero, else # if (x == 0)
+	move $a1, $s0
+	move $a2, $s1
+	jal revealNeighboringCells
 	
 	else:
-	addi $s1, 1
+	addi $s1, $s1, 1
 	j j_for_inicio
 	j_for_fim:
 	
-	addi $s0, 1
+	addi $s0, $s0, 1
 	j i_for_inicio
 	i_for_fim:
 	
 	restore_context
 	jr $ra
-
-recursao:
-	move $a1, $s0
-	move $a2, $s1
-	jal revealNeighboringCells
-	lw $a1, 0 ($sp)
-	lw $a2, 4 ($sp)
-	lw $ra, 8 ($sp)
-	addi $sp, $sp, 12
-	jr $ra
-	
-	
