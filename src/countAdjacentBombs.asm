@@ -33,18 +33,18 @@ countAdjacentBombs:
  		lw $t6, 0($t5)					#adiciona ao registrador t6 o conteudo de 72 ''supondo -1''
  		
  		bne $t6, -1, not_bomb				#é igual a -1
- 		addi $v0, 1					#adiciona 1 a v0
+ 		addi $v0, $v0, 1					#adiciona 1 a v0
  		
  		not_bomb:
 	
 	next_j_step:
-		addi $t1, 1 
+		addi $t1, $t1, 1 
 		j loop_j
 	next_i_step:
-		addi $t0, 1
+		addi $t0, $t0, 1
 		j loop_i
 	end_loop_j:
-		addi $t0, 1
+		addi $t0, $t0, 1
 		j loop_i
 	end_loop_i:
 		restore_context
