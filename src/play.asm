@@ -29,8 +29,8 @@ play:
   
   equal_to_minuts_two:
   	move $a0, $s0
-  	move $a2, $s2
-  	move $a3, $s3
+  	move $a2, $s1
+  	move $a3, $s2
   	jal countAdjacentBombs #CountAdjacentBombs retorna um valor em v0
  	sw $v0, 0($s6)
   	beqz $v0, no_bombs
