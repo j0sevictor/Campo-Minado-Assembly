@@ -39,6 +39,9 @@ play:
   	jr $ra  
   	
   no_bombs:
+  	move $a0, $s0
+  	move $a2, $s2
+  	move $a3, $s3
 	jal revealNeighboringCells
 	li $v0, 1
   	restore_context

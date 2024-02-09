@@ -8,7 +8,6 @@ countAdjacentBombs:
 	move $s2, $a2 #posicao linha				#s2 = 3
 	move $s3, $a3 #posicao coluna				#s3 = 3
 	li $t0, -1 #iniciando contador i 
-	li $t1, -1 #iniciando contador j 
 	li $v0, 0 #iniciando variável de retorno
 	
 	
@@ -19,6 +18,7 @@ countAdjacentBombs:
  	blt $t2, $zero, next_i_step				#se t2 < 0, proxima parte do loop
  	bge $t2, SIZE, end_loop_i				# se t2 == 8, finaliza o loop (nao tem mais linhas)
  	
+ 	li $t1, -1 #iniciando contador j 
  	loop_j:
  	 	bge $t1, 2, end_loop_j				#se t1 == 2, finaliza loop j (proximo loop i)
  		add $t3, $s3, $t1 # j = coluna + contador t1	#t3 = 3 + t1, primeira rodada = 2 , segunda = 3, terceira = 4

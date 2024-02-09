@@ -4,18 +4,19 @@
 
 revealNeighboringCells:
 	# Par�metros:
-	# 	a0 = endere�o do board
-	# 	a1 = linha
-	# 	a2 = coluna
+	# 	s5 = endere�o do board
+	# 	a2 = linha
+	# 	a3 = coluna
 	# Contexto:
 	# 	s0 = i
 	# 	s1 = j
-	# 	s2 = a1 (linha)
-	# 	s3 = a2 (coluna)
+	# 	s2 = a2 (linha)
+	# 	s3 = a3 (coluna)
 	save_context
 	
-	move $s2, $a1
-	move $s3, $a2
+	move $s5, $a0 
+	move $s2, $a2
+	move $s3, $a3
 		
 	addi $s0, $s2, -1 # int i = row - 1 ;
 	
@@ -43,19 +44,21 @@ revealNeighboringCells:
 	sll $t0, $s0, 5
 	sll $t1, $s1, 2
 	add $t2, $t0, $t1
-	add $s4, $t2, $a0 # s4 = endere�o do board
+	add $s4, $t2, $s5 # s4 = endere�o do board
 	lw $t1, 0 ($s4)
 	bne $t1, -2, continue_j 
 	
-	move $a1, $s0
-	move $a2, $s1
+	move $a0, $s5
+	move $a2, $s0
+	move $a3, $s1
 	jal countAdjacentBombs
 	
 	sw $v0, 0($s4) # board[i][j] = x;
 	
 	bne $v0, $zero, continue_j # if (x == 0)
-	move $a1, $s0
-	move $a2, $s1
+	move $a0, $s5
+	move $a2, $s0
+	move $a3, $s1
 	jal revealNeighboringCells
 	
 	continue_j:
