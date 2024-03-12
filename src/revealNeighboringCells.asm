@@ -4,7 +4,7 @@
 
 revealNeighboringCells:
 	# Parï¿½metros:
-	# 	s5 = endereï¿½o do board
+	# 	a0 = endereï¿½o do board
 	# 	a2 = linha
 	# 	a3 = coluna
 	# Contexto:
@@ -12,6 +12,7 @@ revealNeighboringCells:
 	# 	s1 = j
 	# 	s2 = a2 (linha)
 	# 	s3 = a3 (coluna)
+	#	s5 = a0
 	save_context
 	
 	move $s5, $a0 
@@ -22,7 +23,8 @@ revealNeighboringCells:
 	
 	i_for_inicio:
 	addi $t0, $s2, 1 # $t0 = row + 1
-	bgt $s0, $t0, i_for_fim
+	bgt $s0, $t0, i_for_fim # i < row + 1
+	# Condicionais para o caso da posição i estar fora do tabuleiro
 	blt $s0, $zero, continue_i
 	bge $s0, SIZE, i_for_fim
 	
@@ -30,10 +32,12 @@ revealNeighboringCells:
 	
 	j_for_inicio:
 	addi $t0, $s3, 1 # $t0 = column + 1
-	bgt $s1, $t0, j_for_fim
+	bgt $s1, $t0, j_for_fim # j < column + 1
+	# Condicionais para o caso da posição j estar fora do tabuleiro
 	blt $s1, $zero, continue_j
 	bge $s1, SIZE, j_for_fim
 	
+	# if (i >= 0 && i < SIZE && j >= 0 && j < SIZE && board[i][j] == -2)
 	li $t1, SIZE
 	blt $s0, 0, continue_j
 	bge $s0, $t1, continue_j
@@ -45,8 +49,8 @@ revealNeighboringCells:
 	sll $t1, $s1, 2
 	add $t2, $t0, $t1
 	add $s4, $t2, $s5 # s4 = endereï¿½o do board
-	lw $t1, 0 ($s4)
-	bne $t1, -2, continue_j 
+	lw $t1, 0 ($s4) # t1 = board[i][j]
+	bne $t1, -2, continue_j  # (board[i][j] == -2)
 	
 	move $a0, $s5
 	move $a2, $s0

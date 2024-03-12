@@ -23,7 +23,7 @@ main:
   begin_while:					 # while (gameActive) {
   beqz $s1, end_while #Se s1, que nesse caso � 1, � igual a 0, encerra o jogo
   move $a0, $s0 #a0 recupera a posi��o do board na memoria 
-  li $a1, 0 #a1 = 0 
+  li $a1, 1 #a1 = 0 
   jal printBoard				 # printBoard(board,0); // Shows the board without bombs
   
   la $a0, msg_row		
